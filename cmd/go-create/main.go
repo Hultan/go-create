@@ -12,8 +12,9 @@ import (
 	"go-create/internal/copyFile"
 )
 
-const basePath = "/home/per/temp/code"
+const basePath = "/home/per/code"
 const templateBasePath = "/home/per/code/template/gtk-startup"
+const applicationVersion = "1.0.0"
 
 var reader *bufio.Reader
 
