@@ -29,6 +29,8 @@ func main() {
 		os.Exit(0)
 	}
 
+	desc := getUserInput("Enter project description : ")
+
 	input = getUserInput(fmt.Sprintf("Create project [%s]? (Y/n)", projectPath))
 	if input != "" && !strings.HasPrefix(strings.ToUpper(input), "Y") {
 		fmt.Println("Aborted by user...")
@@ -38,18 +40,20 @@ func main() {
 	fmt.Printf("Creating project '%s'...\n", projectName)
 
 	createProjectFolders(projectPath, projectName)
-	copyProjectFiles(projectPath, projectName)
+	copyProjectFiles(projectPath, projectName, desc)
 	goMod(projectPath, projectName)
 	gitInit(projectPath)
 
 	fmt.Printf("Finished creating project '%s'...\n", projectName)
 }
 
-func copyProjectFiles(projectPath, projectName string) {
+func copyProjectFiles(projectPath, projectName, desc string) {
 	// BASE FILES
 	cfo := &copyFile.CopyFileOperation{
-		From: &copyFile.CopyFilePath{BasePath: templateBasePath},
-		To:   &copyFile.CopyFilePath{BasePath: projectPath},
+		From:        &copyFile.CopyFilePath{BasePath: templateBasePath},
+		To:          &copyFile.CopyFilePath{BasePath: projectPath},
+		ProjectName: projectName,
+		Description: desc,
 	}
 	cfo.SetFileName(".gitignore")
 	cfo.CopyFile()
@@ -79,6 +83,12 @@ func copyProjectFiles(projectPath, projectName string) {
 	cfo.SetFileName("dialog.go")
 	cfo.CopyFile()
 	cfo.SetFileName("aboutDialog.go")
+	cfo.CopyFile()
+
+	// RUN CONFIGURATION
+	cfo.SetRelativePath(".run")
+	cfo.From.FileName = "project-name.run.xml"
+	cfo.To.FileName = fmt.Sprintf("%s.run.xml", projectName)
 	cfo.CopyFile()
 }
 
@@ -139,6 +149,7 @@ func createProjectFolders(projectPath, projectName string) {
 	createFolder(path.Join(projectPath, "cmd", projectName))
 	createFolder(path.Join(projectPath, "internal"))
 	createFolder(path.Join(projectPath, "internal", projectName))
+	createFolder(path.Join(projectPath, ".run"))
 }
 
 func createFolder(path string) {

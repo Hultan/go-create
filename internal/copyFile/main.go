@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 	"path"
+	"strings"
 )
 
 type CopyFilePath struct {
@@ -14,8 +15,10 @@ type CopyFilePath struct {
 }
 
 type CopyFileOperation struct {
-	From *CopyFilePath
-	To   *CopyFilePath
+	ProjectName string
+	Description string
+	From        *CopyFilePath
+	To          *CopyFilePath
 }
 
 func (c *CopyFileOperation) SetFileName(fileName string) {
@@ -62,12 +65,23 @@ func (c *CopyFileOperation) copyFileInternal(fromPath, toPath string) error {
 	if err != nil {
 		return err
 	}
+
+	data, err := io.ReadAll(from)
+	if err != nil {
+		return err
+	}
+
+	// Replace [$PROJECTNAME$] and [$DESCRIPTION$] with project name and description
+	text := strings.Replace(string(data), "[$PROJECTNAME$]", c.ProjectName, -1)
+	text = strings.Replace(text, "[$$PROJECTNAME$$]", strings.ToUpper(c.ProjectName), -1)
+	text = strings.Replace(text, "[$DESCRIPTION$]", c.Description, -1)
+
 	to, err := os.Create(toPath)
 	if err != nil {
 		return err
 	}
 
-	_, err = io.Copy(to, from)
+	_, err = io.WriteString(to, text)
 	if err != nil {
 		return err
 	}
