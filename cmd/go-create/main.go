@@ -21,24 +21,30 @@ var reader *bufio.Reader
 func main() {
 	reader = bufio.NewReader(os.Stdin)
 
-	input := getUserInput("Enter project name to create : ")
+	// Get a project name
+	input := getUserInput("Enter project name to create")
 	projectName := strings.Replace(input, " ", "-", -1)
 	projectPath := path.Join(basePath, projectName)
 
+	// Make sure that it does not exist
 	if _, err := os.Stat(projectPath); err == nil {
-		fmt.Printf("A project with the path [%s] already exists!\n", projectPath)
+		fmt.Fprintf(os.Stdout, "A project with the path [%s] already exists!\n", projectPath)
 		os.Exit(0)
 	}
 
-	desc := getUserInput("Enter project description : ")
+	// Get a project description
+	desc := getUserInput("Enter project description")
 
-	input = getUserInput(fmt.Sprintf("Create project [%s]? (Y/n)", projectPath))
+	// Ask for confirmation
+	msg := fmt.Sprintf("Create project [%s]? (Y/n)", projectPath)
+	input = getUserInput(msg)
 	if input != "" && !strings.HasPrefix(strings.ToUpper(input), "Y") {
-		fmt.Println("Aborted by user...")
+		fmt.Fprintf(os.Stdout, "Aborted by user...\n")
 		os.Exit(0)
 	}
 
-	fmt.Printf("Creating project '%s'...\n", projectName)
+	// Create project
+	fmt.Fprintf(os.Stdout, "Creating project '%s'...\n", projectName)
 
 	createProjectFolders(projectPath, projectName)
 	copyProjectFiles(projectPath, projectName, desc)
@@ -161,7 +167,7 @@ func createFolder(path string) {
 }
 
 func getUserInput(msg string) string {
-	fmt.Println(msg)
+	fmt.Fprintf(os.Stdout, "%s : ", msg)
 	// ReadString will block until the delimiter is entered
 	input, err := reader.ReadString('\n')
 	if err != nil {
