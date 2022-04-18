@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"os"
 	"path"
@@ -35,8 +36,12 @@ func main() {
 	// Get a project description
 	projectDescription := getUserInput("Enter project description")
 
-	// TODO : Choose a template
-	projectTemplate := template.GTK
+	// Get the project type (template to use)
+	projectTemplate, err := getTemplate()
+	if err != nil {
+		_, _ = fmt.Fprintf(os.Stdout, "Invalid project type!\n")
+		os.Exit(0)
+	}
 
 	// Ask for confirmation
 	message := fmt.Sprintf("Create project [%s]? (Y/n)", projectPath)
@@ -58,6 +63,25 @@ func main() {
 	project.Create()
 
 	_, _ = fmt.Fprintf(os.Stdout, "Finished creating project '%s'...\n", projectName)
+}
+
+func getTemplate() (template.Type, error) {
+	_, _ = fmt.Fprintf(os.Stdout, "Project types :\n")
+	_, _ = fmt.Fprintf(os.Stdout, "  n) Normal\n")
+	_, _ = fmt.Fprintf(os.Stdout, "  g) Gtk\n")
+	_, _ = fmt.Fprintf(os.Stdout, "  p) P5\n")
+	input := getUserInput("Select a project type")
+	switch strings.ToLower(input[:1]) {
+	case "n":
+		return template.Normal, nil
+	case "g":
+		return template.GTK, nil
+	case "p":
+		return template.P5, nil
+	default:
+		err := errors.New(fmt.Sprintf("Invalid project type : %s\n", input))
+		return template.Normal, err
+	}
 }
 
 func getUserInput(msg string) string {

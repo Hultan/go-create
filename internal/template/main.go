@@ -8,7 +8,9 @@ import (
 type Type int
 
 const (
-	GTK Type = iota
+	Normal Type = iota
+	GTK
+	P5
 )
 
 type Project struct {
@@ -19,9 +21,16 @@ type Project struct {
 }
 
 func (p *Project) Create() {
-	if p.Template == GTK {
+	switch p.Template {
+	case Normal:
+		normal := normalTemplate{p}
+		normal.create()
+	case GTK:
 		gtk := gtkTemplate{p}
 		gtk.create()
+	case P5:
+		p5 := p5Template{p}
+		p5.create()
 	}
 }
 
