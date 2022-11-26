@@ -13,24 +13,32 @@ import (
 
 const basePath = "/home/per/code"
 const applicationName = "go-create"
-const applicationVersion = "v1.1.0"
+const applicationVersion = "v1.2.1"
 
 var reader *bufio.Reader
+var force = false
 
 func main() {
+	if len(os.Args) > 1 && os.Args[1] == "-f" {
+		force = true
+	}
+
 	reader = bufio.NewReader(os.Stdin)
 
-	_, _ = fmt.Fprintf(os.Stdout, "%s - %s\n\n", applicationName, applicationVersion)
+	_, _ = fmt.Fprintf(os.Stdout, "%s - %s\n", applicationName, applicationVersion)
+	_, _ = fmt.Fprintf(os.Stdout, "Force mode (-f) : %v\n\n", force)
 
 	// Get a project name
 	input := getUserInput("Enter project name to create")
 	projectName := strings.Replace(input, " ", "-", -1)
 	projectPath := path.Join(basePath, projectName)
 
-	// Make sure that it does not exist
-	if _, err := os.Stat(projectPath); err == nil {
-		_, _ = fmt.Fprintf(os.Stdout, "A project with the path [%s] already exists!\n", projectPath)
-		os.Exit(0)
+	// Make sure that it does not exist (unless force is true)
+	if !force {
+		if _, err := os.Stat(projectPath); err == nil {
+			_, _ = fmt.Fprintf(os.Stdout, "A project with the path [%s] already exists!\n", projectPath)
+			os.Exit(0)
+		}
 	}
 
 	// Get a project description

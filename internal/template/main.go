@@ -37,6 +37,6 @@ func (p *Project) Create() {
 func createFolder(path string) {
 	err := os.Mkdir(path, 0755)
 	if err != nil {
-		_, _ = fmt.Fprintf(os.Stderr, "Failed to create folder (%s) : %v", path, err)
+		_, _ = fmt.Fprintf(os.Stderr, "Failed to create folder (%s) : %v\n", path, err)
 	}
 }

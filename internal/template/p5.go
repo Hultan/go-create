@@ -79,11 +79,11 @@ func (t *p5Template) goMod() {
 
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		_, _ = fmt.Fprintf(os.Stderr, "Failed to run : go mod init github.com/hultan/%s : %v", t.project.Name, err)
+		_, _ = fmt.Fprintf(os.Stderr, "Failed to run : go mod init github.com/hultan/%s : %v\n", t.project.Name, err)
 	}
 	err = cmd.Process.Release()
 	if err != nil {
-		_, _ = fmt.Fprintf(os.Stderr, "Failed to release process (goMod) : %v", err)
+		_, _ = fmt.Fprintf(os.Stderr, "Failed to release process (goMod) : %v\n", err)
 	}
 
 	fmt.Println(string(output))
@@ -102,11 +102,11 @@ func (t *p5Template) gitInit() {
 
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		_, _ = fmt.Fprintf(os.Stderr, "Failed to run : git init : %v", err)
+		_, _ = fmt.Fprintf(os.Stderr, "Failed to run : git init : %v\n", err)
 	}
 	err = cmd.Process.Release()
 	if err != nil {
-		_, _ = fmt.Fprintf(os.Stderr, "Failed to release process (gitInit): %v", err)
+		_, _ = fmt.Fprintf(os.Stderr, "Failed to release process (gitInit): %v\n", err)
 	}
 
 	fmt.Println(string(output))
