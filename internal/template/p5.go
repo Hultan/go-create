@@ -43,27 +43,23 @@ func (t *p5Template) copyProjectFiles() {
 		ProjectName: t.project.Name,
 		Description: t.project.Description,
 	}
-	cfo.SetFileName(".gitignore")
-	cfo.CopyFile()
-	cfo.SetFileName("readme.md")
-	cfo.CopyFile()
+	cfo.CopyFile(".gitignore")
+	cfo.CopyFile("readme.md")
 
 	// ASSETS
 	cfo.SetRelativePath("assets")
-	cfo.SetFileName("application.png")
-	cfo.CopyFile()
+	cfo.CopyFile("application.png")
 
 	// MAIN FILES
-	cfo.SetFileName("main.go")
 	cfo.From.RelativePath = "cmd/gtk-startup"
 	cfo.To.RelativePath = fmt.Sprintf("cmd/%s", t.project.Name)
-	cfo.CopyFile()
+	cfo.CopyFile("main.go")
 
 	// RUN CONFIGURATION
 	cfo.SetRelativePath(".run")
 	cfo.From.FileName = "project-name.run.xml"
 	cfo.To.FileName = fmt.Sprintf("%s.run.xml", t.project.Name)
-	cfo.CopyFile()
+	cfo.CopyFile("")
 }
 
 func (t *p5Template) goMod() {

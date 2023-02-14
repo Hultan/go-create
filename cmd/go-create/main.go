@@ -12,8 +12,8 @@ import (
 )
 
 const basePath = "/home/per/code"
-const applicationName = "go-create"
-const applicationVersion = "v1.2.2"
+const applicationName = "gocreate"
+const applicationVersion = "v1.2.3"
 
 var reader *bufio.Reader
 var force = false

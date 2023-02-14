@@ -46,51 +46,39 @@ func (t *gtkTemplate) copyProjectFiles() {
 		ProjectName: t.project.Name,
 		Description: t.project.Description,
 	}
-	cfo.SetFileName(".gitignore")
-	cfo.CopyFile()
-	cfo.SetFileName("readme.md")
-	cfo.CopyFile()
+	cfo.CopyFile(".gitignore")
+	cfo.CopyFile("readme.md")
 
 	// ASSETS
 	cfo.SetRelativePath("assets")
-	cfo.SetFileName("application.png")
-	cfo.CopyFile()
-	cfo.SetFileName("main.glade")
-	cfo.CopyFile()
+	cfo.CopyFile("application.png")
+	cfo.CopyFile("main.glade")
 
 	// MAIN FILES
-	cfo.SetFileName("main.go")
 	cfo.From.RelativePath = "cmd/gtk-startup"
 	cfo.To.RelativePath = fmt.Sprintf("cmd/%s", t.project.Name)
-	cfo.CopyFile()
+	cfo.CopyFile("main.go")
 
 	// INTERNAL FILES
 	cfo.From.RelativePath = "internal/gtk-startup"
 	cfo.To.RelativePath = fmt.Sprintf("internal/%s", t.project.Name)
-	cfo.SetFileName("mainForm.go")
-	cfo.CopyFile()
-	cfo.SetFileName("extraForm.go")
-	cfo.CopyFile()
-	cfo.SetFileName("dialog.go")
-	cfo.CopyFile()
-	cfo.SetFileName("aboutDialog.go")
-	cfo.CopyFile()
-	cfo.SetFileName("gtkBuilder.go")
-	cfo.CopyFile()
+	cfo.CopyFile("mainForm.go")
+	cfo.CopyFile("extraForm.go")
+	cfo.CopyFile("dialog.go")
+	cfo.CopyFile("aboutDialog.go")
+	cfo.CopyFile("gtkBuilder.go")
 
 	// INTERNAL FILES/assets
 	cfo.From.RelativePath = "internal/gtk-startup/assets"
 	cfo.To.RelativePath = fmt.Sprintf("internal/%s/assets", t.project.Name)
-	cfo.SetFileName("application.png")
-	cfo.CopyFile()
-	cfo.SetFileName("main.glade")
-	cfo.CopyFile()
+	cfo.CopyFile("application.png")
+	cfo.CopyFile("main.glade")
 
 	// RUN CONFIGURATION
 	cfo.SetRelativePath(".run")
 	cfo.From.FileName = "project-name.run.xml"
 	cfo.To.FileName = fmt.Sprintf("%s.run.xml", t.project.Name)
-	cfo.CopyFile()
+	cfo.CopyFile("")
 }
 
 func (t *gtkTemplate) goMod() {

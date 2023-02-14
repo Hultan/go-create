@@ -21,11 +21,6 @@ type CopyFileOperation struct {
 	To          *CopyFilePath
 }
 
-func (c *CopyFileOperation) SetFileName(fileName string) {
-	c.From.FileName = fileName
-	c.To.FileName = fileName
-}
-
 func (c *CopyFileOperation) SetRelativePath(relativePath string) {
 	c.From.RelativePath = relativePath
 	c.To.RelativePath = relativePath
@@ -52,7 +47,12 @@ func (c *CopyFileOperation) getFailureMessage(err error) string {
 	return fmt.Sprintf("Failed to copy '%s' to '%s' :\n\t%v\n", c.FromFilePath(), c.ToFilePath(), err)
 }
 
-func (c *CopyFileOperation) CopyFile() {
+func (c *CopyFileOperation) CopyFile(fileName string) {
+	if fileName != "" {
+		c.From.FileName = fileName
+		c.To.FileName = fileName
+	}
+
 	err := c.copyFileInternal(c.FromFilePath(), c.ToFilePath())
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, c.getFailureMessage(err))
