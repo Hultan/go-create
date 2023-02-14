@@ -34,6 +34,7 @@ func (t *gtkTemplate) createProjectFolders() {
 	createFolder(path.Join(t.project.Path, "cmd", t.project.Name))
 	createFolder(path.Join(t.project.Path, "internal"))
 	createFolder(path.Join(t.project.Path, "internal", t.project.Name))
+	createFolder(path.Join(t.project.Path, "internal", t.project.Name, "assets"))
 	createFolder(path.Join(t.project.Path, ".run"))
 }
 
@@ -73,6 +74,16 @@ func (t *gtkTemplate) copyProjectFiles() {
 	cfo.SetFileName("dialog.go")
 	cfo.CopyFile()
 	cfo.SetFileName("aboutDialog.go")
+	cfo.CopyFile()
+	cfo.SetFileName("gtkBuilder.go")
+	cfo.CopyFile()
+
+	// INTERNAL FILES/assets
+	cfo.From.RelativePath = "internal/gtk-startup/assets"
+	cfo.To.RelativePath = fmt.Sprintf("internal/%s/assets", t.project.Name)
+	cfo.SetFileName("application.png")
+	cfo.CopyFile()
+	cfo.SetFileName("main.glade")
 	cfo.CopyFile()
 
 	// RUN CONFIGURATION
