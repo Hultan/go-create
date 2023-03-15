@@ -29,9 +29,7 @@ func (t *p5Template) createProjectFolders() {
 
 	// Create project folders
 	createFolder(path.Join(t.project.Path, "assets"))
-	createFolder(path.Join(t.project.Path, "build"))
-	createFolder(path.Join(t.project.Path, "cmd"))
-	createFolder(path.Join(t.project.Path, "cmd", t.project.Name))
+	createFolder(path.Join(t.project.Path, "bin"))
 	createFolder(path.Join(t.project.Path, ".run"))
 }
 
@@ -44,6 +42,7 @@ func (t *p5Template) copyProjectFiles() {
 		Description: t.project.Description,
 	}
 	cfo.CopyFile(".gitignore")
+	cfo.CopyFile("makefile")
 	cfo.CopyFile("readme.md")
 
 	// ASSETS
@@ -51,8 +50,8 @@ func (t *p5Template) copyProjectFiles() {
 	cfo.CopyFile("application.png")
 
 	// MAIN FILES
-	cfo.From.RelativePath = "cmd/gtk-startup"
-	cfo.To.RelativePath = fmt.Sprintf("cmd/%s", t.project.Name)
+	cfo.From.RelativePath = ""
+	cfo.To.RelativePath = ""
 	cfo.CopyFile("main.go")
 
 	// RUN CONFIGURATION

@@ -29,9 +29,7 @@ func (t *normalTemplate) createProjectFolders() {
 
 	// Create project folders
 	createFolder(path.Join(t.project.Path, "assets"))
-	createFolder(path.Join(t.project.Path, "build"))
-	createFolder(path.Join(t.project.Path, "cmd"))
-	createFolder(path.Join(t.project.Path, "cmd", t.project.Name))
+	createFolder(path.Join(t.project.Path, "bin"))
 	createFolder(path.Join(t.project.Path, "internal"))
 	createFolder(path.Join(t.project.Path, "internal", t.project.Name))
 	createFolder(path.Join(t.project.Path, ".run"))
@@ -46,6 +44,7 @@ func (t *normalTemplate) copyProjectFiles() {
 		Description: t.project.Description,
 	}
 	cfo.CopyFile(".gitignore")
+	cfo.CopyFile("makefile")
 	cfo.CopyFile("readme.md")
 
 	// ASSETS
@@ -53,8 +52,8 @@ func (t *normalTemplate) copyProjectFiles() {
 	cfo.CopyFile("application.png")
 
 	// MAIN FILES
-	cfo.From.RelativePath = "cmd/normal"
-	cfo.To.RelativePath = fmt.Sprintf("cmd/%s", t.project.Name)
+	cfo.From.RelativePath = ""
+	cfo.To.RelativePath = ""
 	cfo.CopyFile("main.go")
 
 	// INTERNAL FILES
